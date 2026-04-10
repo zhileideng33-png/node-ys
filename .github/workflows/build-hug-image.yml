@@ -12,6 +12,9 @@ on:
     branches: [ hug ]
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,9 +24,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
-          ref: hug 
+          ref: hug
 
       - name: Convert to lowercase
         id: vars
@@ -42,12 +45,12 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ steps.vars.outputs.owner_lower }}/myys:latest
+            ghcr.io/${{ steps.vars.outputs.owner_lower }}/hugws:latest
           labels: |
             org.opencontainers.image.source=https://github.com/${{ steps.vars.outputs.repo_lower }}
             org.opencontainers.image.description=http server
